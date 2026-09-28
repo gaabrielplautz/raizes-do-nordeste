@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cee77f07-28ff-4e1d-a1e4-467b69047b00" name="Changes" comment="" />
+    <list default="true" id="cee77f07-28ff-4e1d-a1e4-467b69047b00" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/models/order_channel.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/models/product.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/schemas/order.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/schemas/product.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/core/security.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/security.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -49,6 +59,11 @@
     "git-widget-placeholder": "main"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\gabri\OneDrive\Área de Trabalho\Graduação em ADS\Projeto Desenvolvimento Back-end\Projeto" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
