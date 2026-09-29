@@ -1,15 +1,21 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
-from app.core.database import get_db  #importação da sessão do BD
+from app.core.database import get_db
 from app.models.product import Product, Stock
+from app.models.models import Usuario, TipoUsuarioEnum
 from app.schemas.product import ProductCreate, ProductResponse, StockResponse, StockBase
+from app.core.security import get_current_user, permit  # <--- Importa o permit para validação de perfis
 
 router = APIRouter(prefix="/products", tags=["Produtos e Stock"])
 
 
 @router.post("/", response_model=ProductResponse, status_code=status.HTTP_201_CREATED)
-def create_product(product_in: ProductCreate, db: Session = Depends(get_db)):
+def create_product(
+    product_in: ProductCreate,
+    db: Session = Depends(get_db),
+    current_user: Usuario = Depends(permit(TipoUsuarioEnum.ADMIN, TipoUsuarioEnum.OPERADOR))  # <--- Apenas Admin ou Operador criam produtos
+):
     # Verificar se já existe um produto com o mesmo nome
     existing = db.query(Product).filter(Product.name == product_in.name).first()
     if existing:
@@ -42,12 +48,18 @@ def create_product(product_in: ProductCreate, db: Session = Depends(get_db)):
 
 @router.get("/", response_model=List[ProductResponse])
 def list_products(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    # Listagem de cardápio costuma ser pública para consulta por clientes no App/Totem/Web
     products = db.query(Product).offset(skip).limit(limit).all()
     return products
 
 
 @router.put("/{product_id}/stock", response_model=StockResponse)
-def update_stock(product_id: int, stock_in: StockBase, db: Session = Depends(get_db)):
+def update_stock(
+    product_id: int,
+    stock_in: StockBase,
+    db: Session = Depends(get_db),
+    current_user: Usuario = Depends(permit(TipoUsuarioEnum.ADMIN, TipoUsuarioEnum.OPERADOR))  # <--- Apenas Admin ou Operador mexem no stock
+):
     stock = db.query(Stock).filter(Stock.product_id == product_id).first()
     if not stock:
         raise HTTPException(status_code=404, detail="Registo de stock não encontrado para este produto.")

@@ -2,14 +2,19 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.models.product import Product, Stock
-from app.models.models import Pedido as Order, ItemPedido as OrderItem
+from app.models.models import Pedido as Order, ItemPedido as OrderItem, Usuario
 from app.schemas.order import OrderCreate, OrderResponse
+from app.core.security import get_current_user  # <--- Importa a segurança JWT
 
 router = APIRouter(prefix="/pedidos", tags=["Pedidos e Fluxo Crítico"])
 
 
 @router.post("/", response_model=OrderResponse, status_code=status.HTTP_201_CREATED)
-def create_order(order_data: OrderCreate, db: Session = Depends(get_db)):
+def create_order(
+    order_data: OrderCreate,
+    db: Session = Depends(get_db),
+    current_user: Usuario = Depends(get_current_user)  # <--- Exige autenticação por Token JWT
+):
     # 1. Validar e calcular itens do pedido
     total_amount = 0.0
     validated_items = []
@@ -43,7 +48,7 @@ def create_order(order_data: OrderCreate, db: Session = Depends(get_db)):
         total_amount += subtotal
         validated_items.append((product, item.quantidade, float(product.price)))
 
-    # 2. Criar o Pedido registrando o canalPedido obrigatório
+    # Criar o Pedido registrando o canalPedido obrigatório
     new_order = Order(
         canal_pedido=order_data.canalPedido,
         unit_id=order_data.unidadeId,
@@ -54,7 +59,7 @@ def create_order(order_data: OrderCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_order)
 
-    # 3. Dar baixa no stock e associar os itens
+    # Dar baixa no stock e associar os itens
     for product, qty, price in validated_items:
         stock = db.query(Stock).filter(
             Stock.product_id == product.id,
