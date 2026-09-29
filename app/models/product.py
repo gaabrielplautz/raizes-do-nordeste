@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
-from app.db.base import Base  # Ou o caminho onde define a base declarativa do SQLAlchemy
+from app.core.database import Base  #caminho onde define a base declarativa do SQLAlchemy
 
 class Product(Base):
     __tablename__ = "products"

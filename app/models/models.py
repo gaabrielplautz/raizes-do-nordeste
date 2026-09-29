@@ -42,3 +42,37 @@ class Estoque(Base):
     quantidade = Column(Integer, nullable=False, default=0)
 
     produto = relationship("Produto", back_populates="estoque")
+
+class CanalPedidoEnum(str, enum.Enum):
+    APP = "APP"
+    TOTEM = "TOTEM"
+    BALCAO = "BALCAO"
+    PICKUP = "PICKUP"
+    WEB = "WEB"
+
+
+class Pedido(Base):
+    __tablename__ = "pedidos"
+
+    id = Column(Integer, primary_key=True, index=True)
+    canal_pedido = Column(String, nullable=False)  # Guarda valores como APP, TOTEM, etc.
+    unit_id = Column(Integer, nullable=False)
+    status = Column(String, default="AGUARDANDO_PAGAMENTO", nullable=False)
+    total_amount = Column(Float, nullable=False, default=0.0)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    # Relação com os itens do pedido
+    itens = relationship("ItemPedido", back_populates="pedido", cascade="all, delete-orphan")
+
+
+class ItemPedido(Base):
+    __tablename__ = "itens_pedido"
+
+    id = Column(Integer, primary_key=True, index=True)
+    pedido_id = Column(Integer, ForeignKey("pedidos.id"), nullable=False)
+    product_id = Column(Integer, ForeignKey("produtos.id"), nullable=False)
+    quantity = Column(Integer, nullable=False)
+    unit_price = Column(Float, nullable=False)
+
+    pedido = relationship("Pedido", back_populates="itens")
+    produto = relationship("Produto")

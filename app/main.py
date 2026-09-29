@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from app.core.database import engine, Base
-from app.api import auth
+from app.api import auth, products, channels, orders, payments
 
 # Cria as tabelas no banco de dados SQLite com base nos modelos ORM
 Base.metadata.create_all(bind=engine)
@@ -13,6 +13,10 @@ app = FastAPI(
 
 # Inclui as rotas de autenticação
 app.include_router(auth.router)
+app.include_router(products.router)
+app.include_router(channels.router)
+app.include_router(orders.router)
+app.include_router(payments.router)
 
 @app.get("/", tags=["Root"])
 def read_root():
@@ -21,3 +25,5 @@ def read_root():
         "status": "online",
         "documentacao": "/docs"
     }
+
+

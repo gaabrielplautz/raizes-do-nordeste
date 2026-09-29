@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime
 from datetime import datetime
-from app.db.base import Base
+from app.core.database import Base
 
 class OrderChannel(Base):
     __tablename__ = "order_channels"

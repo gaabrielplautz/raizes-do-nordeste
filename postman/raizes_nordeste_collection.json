@@ -1,0 +1,157 @@
+{
+  "info": {
+    "name": "Raízes do Nordeste - API Backend (Uninter)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "01. Auth",
+      "item": [
+        {
+          "name": "Login Válido",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"cliente@exemplo.com\",\n  \"senha\": \"Senha@123\"\n}"
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8001/auth/login",
+              "protocol": "http",
+              "host": ["127", "0", "0", "1"],
+              "port": "8001",
+              "path": ["auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "02. Produtos e Stock",
+      "item": [
+        {
+          "name": "Listar Produtos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8001/products/",
+              "protocol": "http",
+              "host": ["127", "0", "0", "1"],
+              "port": "8001",
+              "path": ["products", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "03. Pedidos (Fluxo Crítico)",
+      "item": [
+        {
+          "name": "Criar Pedido (Sucesso / Totem)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"canalPedido\": \"TOTEM\",\n  \"unidadeId\": 1,\n  \"itens\": [\n    {\n      \"produtoId\": 1,\n      \"quantidade\": 2\n    }\n  ],\n  \"formaPagamento\": \"MOCK\"\n}"
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8001/pedidos/",
+              "protocol": "http",
+              "host": ["127", "0", "0", "1"],
+              "port": "8001",
+              "path": ["pedidos", ""]
+            }
+          }
+        },
+        {
+          "name": "Criar Pedido - Stock Insuficiente (409)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"canalPedido\": \"APP\",\n  \"unidadeId\": 1,\n  \"itens\": [\n    {\n      \"produtoId\": 1,\n      \"quantidade\": 9999\n    }\n  ],\n  \"formaPagamento\": \"MOCK\"\n}"
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8001/pedidos/",
+              "protocol": "http",
+              "host": ["127", "0", "0", "1"],
+              "port": "8001",
+              "path": ["pedidos", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "04. Pagamento Mock",
+      "item": [
+        {
+          "name": "Processar Pagamento Aprovado",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pedidoId\": 1,\n  \"valor\": 50.00,\n  \"gateway\": \"MOCK\",\n  \"simularRecusa\": false\n}"
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8001/pagamentos/",
+              "protocol": "http",
+              "host": ["127", "0", "0", "1"],
+              "port": "8001",
+              "path": ["pagamentos", ""]
+            }
+          }
+        },
+        {
+          "name": "Processar Pagamento Recusado",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pedidoId\": 1,\n  \"valor\": 50.00,\n  \"gateway\": \"MOCK\",\n  \"simularRecusa\": true\n}"
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8001/pagamentos/",
+              "protocol": "http",
+              "host": ["127", "0", "0", "1"],
+              "port": "8001",
+              "path": ["pagamentos", ""]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
