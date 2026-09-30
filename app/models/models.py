@@ -1,7 +1,7 @@
 from datetime import datetime
 import enum
 from app.core.database import Base
-from sqlalchemy import Column, DateTime, Enum as SQLEnum, Float, ForeignKey, Integer, String
+from sqlalchemy import Column, DateTime, Enum as SQLEnum, Float, Boolean, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
 
@@ -54,7 +54,6 @@ class CanalPedidoEnum(str, enum.Enum):
   PICKUP = "PICKUP"
   WEB = "WEB"
 
-
 class Pedido(Base):
   __tablename__ = "pedidos"
 
@@ -84,3 +83,13 @@ class ItemPedido(Base):
 
   pedido = relationship("Pedido", back_populates="itens")
   produto = relationship("Produto")
+
+class Fidelidade(Base):
+    __tablename__ = "fidelidade"
+
+    id = Column(Integer, primary_key=True, index=True)
+    usuario_id = Column(Integer, ForeignKey("usuarios.id"), unique=True)
+    pontos = Column(Integer, default=0)
+    consentimento_lgpd = Column(Boolean, default=True)
+
+    usuario = relationship("Usuario", backref="fidelidade")
