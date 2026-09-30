@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
-from app.core.database import Base  #caminho onde define a base declarativa do SQLAlchemy
+from app.core.database import Base
 
 class Product(Base):
     __tablename__ = "products"
@@ -12,7 +12,6 @@ class Product(Base):
     category = Column(String, nullable=False)
     is_active = Column(Boolean, default=True)
 
-    # Relação com o estoque
     stock = relationship("Stock", back_populates="product", uselist=False)
 
 class Stock(Base):
