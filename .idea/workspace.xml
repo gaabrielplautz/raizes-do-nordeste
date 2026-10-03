@@ -2,12 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cee77f07-28ff-4e1d-a1e4-467b69047b00" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/api/fidelidade.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/schemas/fidelidade.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/api/units.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/api/fidelidade.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/fidelidade.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/api/orders.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/orders.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/api/payments.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/payments.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/api/products.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/products.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/raizes_nordeste.db" beforeDir="false" afterPath="$PROJECT_DIR$/raizes_nordeste.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/product.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/product.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/schemas/product.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/product.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/schemas/schemas.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/schemas.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/raizes_nordeste.db" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, field_validator
 from typing import Optional
 
 # --- Schemas de Usuário ---
@@ -6,7 +6,15 @@ class UsuarioCreate(BaseModel):
     nome: str
     email: EmailStr
     senha: str
-    tipo: Optional[str] = "cliente"
+    tipo: Optional[str] = "CLIENTE"
+
+    @field_validator('tipo', mode='before')
+    @classmethod
+    def converter_para_maiusculo(cls, v):
+        """Converte automaticamente qualquer tipo de usuário para maiúsculas (ex: 'cliente' -> 'CLIENTE')"""
+        if isinstance(v, str):
+            return v.upper()
+        return v
 
 class UsuarioResponse(BaseModel):
     id: int

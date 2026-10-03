@@ -11,16 +11,16 @@ router = APIRouter(prefix="/pedidos", tags=["Pedidos e Fluxo Crítico"])
 
 @router.post("/", response_model=OrderResponse, status_code=status.HTTP_201_CREATED)
 def create_order(
-    order_data: OrderCreate,
-    db: Session = Depends(get_db),
-    current_user: Usuario = Depends(get_current_user)
+        order_data: OrderCreate,
+        db: Session = Depends(get_db),
+        current_user: Usuario = Depends(get_current_user)
 ):
     # 1. Validar e calcular itens do pedido
     total_amount = 0.0
     validated_items = []
 
     for item in order_data.items:
-        # Consulta o produto no modelo correto (app.models.product)
+        # Consulta o produto
         product = db.query(Product).filter(Product.id == item.produtoId).first()
         if not product:
             raise HTTPException(
@@ -28,9 +28,10 @@ def create_order(
                 detail=f"Produto com ID {item.produtoId} não encontrado."
             )
 
-        # Verificar stock no modelo correto (app.models.product)
+        # RF04: Verificar stock estritamente filtrado por produto E pela unidade do pedido (unit_id)
         stock = db.query(Stock).filter(
-            Stock.product_id == item.produtoId
+            Stock.product_id == item.produtoId,
+            Stock.unit_id == order_data.unit_id
         ).first()
 
         if not stock or stock.quantity < item.quantidade:
@@ -38,9 +39,9 @@ def create_order(
                 status_code=status.HTTP_409_CONFLICT,
                 detail={
                     "error": "ESTOQUE_INSUFICIENTE",
-                    "message": f"Quantidade indisponível para o produto '{product.name}'.",
+                    "message": f"Quantidade indisponível para o produto '{product.name}' na unidade {order_data.unit_id}.",
                     "details": [{"field": f"items.produtoId_{item.produtoId}",
-                                 "issue": f"Disponível: {stock.quantity if stock else 0}"}]
+                                 "issue": f"Disponível na unidade: {stock.quantity if stock else 0}"}]
                 }
             )
 
@@ -59,12 +60,15 @@ def create_order(
     db.commit()
     db.refresh(new_order)
 
-    # 3. Dar baixa no stock e associar os itens do pedido
+    # 3. Dar baixa no stock da unidade correta e associar os itens do pedido
     for product, qty, price in validated_items:
         stock = db.query(Stock).filter(
-            Stock.product_id == product.id
+            Stock.product_id == product.id,
+            Stock.unit_id == order_data.unit_id
         ).first()
-        stock.quantity -= qty
+
+        if stock:
+            stock.quantity -= qty
 
         order_item = OrderItem(
             pedido_id=new_order.id,

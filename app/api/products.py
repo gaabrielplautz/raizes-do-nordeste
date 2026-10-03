@@ -5,7 +5,7 @@ from app.core.database import get_db
 from app.models.product import Product, Stock
 from app.models.models import Usuario, TipoUsuarioEnum
 from app.schemas.product import ProductCreate, ProductResponse, StockResponse, StockBase
-from app.core.security import get_current_user, permit  # <--- Importa o permit para validação de perfis
+from app.core.security import get_current_user, permit
 
 router = APIRouter(prefix="/products", tags=["Produtos e Stock"])
 
@@ -14,7 +14,7 @@ router = APIRouter(prefix="/products", tags=["Produtos e Stock"])
 def create_product(
     product_in: ProductCreate,
     db: Session = Depends(get_db),
-    current_user: Usuario = Depends(permit(TipoUsuarioEnum.ADMIN, TipoUsuarioEnum.OPERADOR))  # <--- Apenas Admin ou Operador criam produtos
+    current_user: Usuario = Depends(permit(TipoUsuarioEnum.ADMIN, TipoUsuarioEnum.OPERADOR))
 ):
     # Verificar se já existe um produto com o mesmo nome
     existing = db.query(Product).filter(Product.name == product_in.name).first()
@@ -33,9 +33,10 @@ def create_product(
     db.commit()
     db.refresh(db_product)
 
-    # Criar o stock inicial associado
+    # Criar o stock inicial associado estritamente à unidade informada (RF04)
     db_stock = Stock(
         product_id=db_product.id,
+        unit_id=product_in.unit_id,  # <--- Essencial para vincular o stock à unidade!
         quantity=product_in.initial_stock,
         min_quantity=5
     )
@@ -48,7 +49,6 @@ def create_product(
 
 @router.get("/", response_model=List[ProductResponse])
 def list_products(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    # Listagem de cardápio costuma ser pública para consulta por clientes no App/Totem/Web
     products = db.query(Product).offset(skip).limit(limit).all()
     return products
 
@@ -58,7 +58,7 @@ def update_stock(
     product_id: int,
     stock_in: StockBase,
     db: Session = Depends(get_db),
-    current_user: Usuario = Depends(permit(TipoUsuarioEnum.ADMIN, TipoUsuarioEnum.OPERADOR))  # <--- Apenas Admin ou Operador mexem no stock
+    current_user: Usuario = Depends(permit(TipoUsuarioEnum.ADMIN, TipoUsuarioEnum.OPERADOR))
 ):
     stock = db.query(Stock).filter(Stock.product_id == product_id).first()
     if not stock:

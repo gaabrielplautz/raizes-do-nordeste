@@ -5,6 +5,7 @@ from typing import Optional
 class StockBase(BaseModel):
     quantity: int
     min_quantity: Optional[int] = 5
+    unit_id: int  # <--- Adicionado para suportar o stock por unidade
 
 class StockCreate(StockBase):
     product_id: int
@@ -12,6 +13,7 @@ class StockCreate(StockBase):
 class StockResponse(StockBase):
     id: int
     product_id: int
+    unit_id: int  # <--- Incluído na resposta
 
     class Config:
         from_attributes = True
@@ -25,7 +27,8 @@ class ProductBase(BaseModel):
     is_active: Optional[bool] = True
 
 class ProductCreate(ProductBase):
-    initial_stock: Optional[int] = 0  # Permite definir o stock inicial ao criar o produto
+    initial_stock: Optional[int] = 0
+    unit_id: int  # <--- Recebe a unidade onde o produto será cadastrado
 
 class ProductResponse(ProductBase):
     id: int

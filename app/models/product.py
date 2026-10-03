@@ -19,6 +19,7 @@ class Stock(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     product_id = Column(Integer, ForeignKey("products.id"), unique=True, nullable=False)
+    unit_id = Column(Integer, ForeignKey("unidades.id"), nullable=False)
     quantity = Column(Integer, default=0, nullable=False)
     min_quantity = Column(Integer, default=5, nullable=False)
 
