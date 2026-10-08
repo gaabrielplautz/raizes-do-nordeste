@@ -1,6 +1,7 @@
 {
   "info": {
     "name": "Raízes do Nordeste - API Backend (Uninter)",
+    "description": "Coleção de testes contendo 10 cenários (6 positivos e 4 negativos) para validação da API REST.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -8,7 +9,7 @@
       "name": "01. Auth",
       "item": [
         {
-          "name": "Login Válido",
+          "name": "1.1 Login Válido (Positivo - 200)",
           "request": {
             "method": "POST",
             "header": [
@@ -29,6 +30,29 @@
               "path": ["auth", "login"]
             }
           }
+        },
+        {
+          "name": "1.2 Login Inválido (Negativo - 401)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"cliente@exemplo.com\",\n  \"senha\": \"SenhaIncorreta\"\n}"
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8001/auth/login",
+              "protocol": "http",
+              "host": ["127", "0", "0", "1"],
+              "port": "8001",
+              "path": ["auth", "login"]
+            }
+          }
         }
       ]
     },
@@ -36,7 +60,7 @@
       "name": "02. Produtos e Stock",
       "item": [
         {
-          "name": "Listar Produtos",
+          "name": "2.1 Listar Produtos (Positivo - 200)",
           "request": {
             "method": "GET",
             "header": [],
@@ -48,6 +72,20 @@
               "path": ["products", ""]
             }
           }
+        },
+        {
+          "name": "2.2 Detalhar Produto Existente (Positivo - 200)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8001/products/1",
+              "protocol": "http",
+              "host": ["127", "0", "0", "1"],
+              "port": "8001",
+              "path": ["products", "1"]
+            }
+          }
         }
       ]
     },
@@ -55,13 +93,17 @@
       "name": "03. Pedidos (Fluxo Crítico)",
       "item": [
         {
-          "name": "Criar Pedido (Sucesso / Totem)",
+          "name": "3.1 Criar Pedido Sucesso - Totem (Positivo - 201)",
           "request": {
             "method": "POST",
             "header": [
               {
                 "key": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
               }
             ],
             "body": {
@@ -78,13 +120,17 @@
           }
         },
         {
-          "name": "Criar Pedido - Stock Insuficiente (409)",
+          "name": "3.2 Criar Pedido - Stock Insuficiente (Negativo - 409)",
           "request": {
             "method": "POST",
             "header": [
               {
                 "key": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
               }
             ],
             "body": {
@@ -99,6 +145,25 @@
               "path": ["pedidos", ""]
             }
           }
+        },
+        {
+          "name": "3.3 Consultar Pedido por ID (Positivo - 200)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8001/pedidos/1",
+              "protocol": "http",
+              "host": ["127", "0", "0", "1"],
+              "port": "8001",
+              "path": ["pedidos", "1"]
+            }
+          }
         }
       ]
     },
@@ -106,13 +171,17 @@
       "name": "04. Pagamento Mock",
       "item": [
         {
-          "name": "Processar Pagamento Aprovado",
+          "name": "4.1 Processar Pagamento Aprovado (Positivo - 200)",
           "request": {
             "method": "POST",
             "header": [
               {
                 "key": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
               }
             ],
             "body": {
@@ -129,18 +198,49 @@
           }
         },
         {
-          "name": "Processar Pagamento Recusado",
+          "name": "4.2 Processar Pagamento Recusado (Negativo - 400)",
           "request": {
             "method": "POST",
             "header": [
               {
                 "key": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
               }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"pedidoId\": 1,\n  \"valor\": 50.00,\n  \"gateway\": \"MOCK\",\n  \"simularRecusa\": true\n}"
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8001/pagamentos/",
+              "protocol": "http",
+              "host": ["127", "0", "0", "1"],
+              "port": "8001",
+              "path": ["pagamentos", ""]
+            }
+          }
+        },
+        {
+          "name": "4.3 Pagamento de Pedido Inexistente (Negativo - 404)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pedidoId\": 99999,\n  \"valor\": 50.00,\n  \"gateway\": \"MOCK\",\n  \"simularRecusa\": false\n}"
             },
             "url": {
               "raw": "http://127.0.0.1:8001/pagamentos/",

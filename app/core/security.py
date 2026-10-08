@@ -60,7 +60,7 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
 def permit(*allowed_roles: str):
     """
     Dependência para validação de perfis (Roles).
-    Garante que o utilizador autenticado possui permissão para aceder à rota,
+    Garante que o utilizador autenticado possui permissão para acessar à rota,
     lançando um erro 403 (Forbidden) caso contrário.
     """
     def role_dependency(current_user: Usuario = Depends(get_current_user)):

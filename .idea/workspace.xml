@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cee77f07-28ff-4e1d-a1e4-467b69047b00" name="Changes" comment="" />
+    <list default="true" id="cee77f07-28ff-4e1d-a1e4-467b69047b00" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/api/orders.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/orders.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/core/security.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/security.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/postman/raizes_nordeste_collection.json" beforeDir="false" afterPath="$PROJECT_DIR$/postman/raizes_nordeste_collection.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/raizes_nordeste.db" beforeDir="false" afterPath="$PROJECT_DIR$/raizes_nordeste.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_api.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -28,6 +35,9 @@
     "url": "https://github.com/gaabrielplautz/raizes-do-nordeste.git",
     "accountId": "df864196-d4eb-4bbc-a33f-17c8ac49d827"
   }
+}]]></component>
+  <component name="HttpClientOnboardingState"><![CDATA[{
+  "isOnboardingCommentShown": true
 }]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3

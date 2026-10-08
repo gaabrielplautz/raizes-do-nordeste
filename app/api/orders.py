@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.models.product import Product, Stock
@@ -81,3 +81,22 @@ def create_order(
     db.commit()
     db.refresh(new_order)
     return new_order
+
+
+@router.get("/", summary="Listar Pedidos Paginados")
+def list_orders(
+        page: int = Query(1, ge=1, description="Número da página"),
+        limit: int = Query(10, ge=1, description="Itens por página"),
+        db: Session = Depends(get_db),
+        current_user: Usuario = Depends(get_current_user)
+):
+    offset = (page - 1) * limit
+    total = db.query(Order).count()
+    pedidos = db.query(Order).offset(offset).limit(limit).all()
+
+    return {
+        "page": page,
+        "limit": limit,
+        "total": total,
+        "data": pedidos
+    }
